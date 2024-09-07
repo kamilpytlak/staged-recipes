@@ -1,0 +1,47 @@
+{% set name = "MoleculaPy" %}
+{% set version = "1.1.3" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/moleculapy-{{ version }}.tar.gz
+  sha256: 1b01d133c5e6f4aed72bca0bc4b1ac456aec50ee23d7655038f3df23ca106a2d
+
+build:
+  entry_points:
+    - moleculapy = MoleculaPy.moleculapy:main
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python >=3.9,<4.0
+    - poetry-core
+    - pip
+  run:
+    - python >=3.9.0,<4.0.0
+    - rdkit >=2024.3.5,<2025.0.0
+    - pandas >=2.2.2,<3.0.0
+    - tqdm >=4.66.4,<5.0.0
+
+test:
+  imports:
+    - MoleculaPy
+  commands:
+    - pip check
+    - moleculapy --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/kamilpytlak/MoleculaPy
+  summary: A command-line application that utilizes the RDKit library to compute molecular descriptors and fingerprints, aiding in the analysis and characterization of chemical structures
+  license: MIT
+  license_file: LICENSE.md
+
+extra:
+  recipe-maintainers:
+    - kamilpytlak
